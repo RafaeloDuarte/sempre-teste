@@ -8,5 +8,6 @@ route.get('/', (req, res) => {
 })
 
 route.post('/users', UserController.store)
+route.post('/users/login', UserController.login)
 
 module.exports = route
