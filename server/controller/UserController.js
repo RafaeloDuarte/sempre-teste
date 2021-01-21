@@ -1,6 +1,7 @@
 const User = require('../model/User')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
+const secret = require('../config/jwToken')
 
 module.exports = {
     async store(req, res) {
@@ -12,9 +13,22 @@ module.exports = {
 
     async login(req, res) {
         const { login, password } = req.body
-        await User.findOne({ where: { login: login }}).then(user => {
-            if (passwordCheck(password, user.hash, user.salt)) res.json(user)
-            else res.json({'mensagem': `senha incorreta para usuário ${user.name}`})
+        await User.findOne({ where: { login: login } }).then(user => {
+            if (!user) return res.status(401).json({ errors: "Usuario não registrado" });
+            if (!passwordCheck(password, user.hash, user.salt))
+                return res.status(401).json({ errors: "Senha inválida" });
+            else {
+                enviarAuthJSON(user)
+                res.json(user)
+            }
+        })
+    },
+
+    async index(req, res) {
+        const id = req.query.id
+        User.findByPk(id).then(user => {
+            if (!user) return res.status(401).json({ errors: "Usuario não registrado" });
+            return res.json({ user: enviarAuthJSON(user) });
         })
     }
 }
@@ -30,7 +44,7 @@ function passwordCheck(password, hash, salt) {
     return newHash === hash
 }
 
-function generateToken({ user }) {
+function generateToken(user) {
     const currentDate = new Date()
     const exp = new Date(currentDate)
     exp.setDate(currentDate.getDate() + 15)
@@ -43,7 +57,7 @@ function generateToken({ user }) {
     }, secret)
 }
 
-function enviarAuthJSON({ user }) {
+function enviarAuthJSON(user) {
     return {
         id: user.id,
         name: user.name,
