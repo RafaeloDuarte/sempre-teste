@@ -5,15 +5,13 @@ const auth = require('./auth')
 
 const route = express.Router()
 
-route.get('/', (req, res) => {
-    res.json({ 'status': 'OK' })
-})
+route.get('/', (req, res) => res.json({ 'status': 'OK' }))
 
-route.post('/users/auth',  UserController.index)
+route.get('/users', auth, UserController.index)
 route.post('/users', UserController.store)
-route.post('/users/login', UserController.login)
+route.post('/users/login',  UserController.login)
 
-route.post('/register', RegisterController.store)
-route.get('/register', RegisterController.show)
+route.post('/register', auth, RegisterController.store)
+route.get('/register', auth, RegisterController.show)
 
 module.exports = route
