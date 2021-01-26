@@ -9,7 +9,7 @@ route.get('/', (req, res) => res.json({ 'status': 'OK' }))
 
 route.get('/users', auth, UserController.index)
 route.post('/users', UserController.store)
-route.post('/users/login',  UserController.login)
+route.post('/users/login', UserController.login)
 
 route.post('/register', auth, RegisterController.store)
 route.get('/register', auth, RegisterController.show)

@@ -18,8 +18,9 @@ module.exports = {
         if (!await bcrypt.compare(password, user.hash))
             return res.status(401).json({ errors: "Senha inválida" })
         user.enviarAuthJSON()
-        res.set('Authorization', user.gerarToken())
-        res.status(204).send()
+        res.json({ user, token: user.gerarToken() })
+    //    res.set('Authorization', user.gerarToken())
+    //    res.status(204).send()
     },
 
     async index(req, res) {
