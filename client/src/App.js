@@ -1,22 +1,21 @@
-import React, { createContext, useContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Provider } from 'react-redux'
 import Login from "./components/Login";
-import Home from './components/Home'
-import { AuthProvider } from "./AuthProvider";
+import Home from "./components/Home";
+import store from "./store";
+import base from "./components/HOC/Base";
+import noAuth from "./components/HOC/NoAuth";
 
 function App() {
 
-//  const [user] = useContext(AuthContext);
-
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <Router>
-        {// <Route path='/login' component={base(Login)} />
-          //<Route path='/' component={base(Home)} />
-        }
-        <Login />
+        <Route path='/' exact={true} component={base(Home)} />
+        <Route path='/login' component={noAuth(Login)} />
       </Router>
-    </AuthProvider>
+    </Provider>
   );
 }
 
