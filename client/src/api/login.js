@@ -3,9 +3,11 @@ import { saveToken, deleteToken, getToken } from "../util/localStorage";
 
 const api = 'http://localhost:3000/users/login'
 
-export function handleLogin(login, password) {
+export async function handleLogin(login, password) {
 
-    axios.post(api, {
+    let authorization
+    
+    await axios.post(api, {
         login, password
         , headers: {
             "Access-Control-Allow-Origin": "*",
@@ -14,11 +16,10 @@ export function handleLogin(login, password) {
             "Content-Type": "application/json;charset=UTF-8"
         },
     }).then(data => {
-
-
         saveToken(data.data.token)
-
+        authorization = data
     })
+    return authorization
 
 }
 
@@ -38,6 +39,5 @@ export function getLogin() {
         saveToken(data.data.token)
 
     })
-
 
 }
