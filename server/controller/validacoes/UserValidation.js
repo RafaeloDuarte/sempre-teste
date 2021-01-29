@@ -1,4 +1,3 @@
-const Joi = require("joi")
 const isString = require('../../util')
 
 module.exports = {
@@ -19,9 +18,9 @@ module.exports = {
         if (isString(login)) err.push({ erroNome: 'Usuário não corresponde à uma string' })
         if (isString(password)) err.push({ erroNome: 'Senha não corresponde à uma string' })
 
-        res.json(err)
-        if (err.length <= 0)
-            next()
+        if (err.length > 1)
+            res.json(err)
+        next()
     },
 
     login: (req, res, next) => {
@@ -37,8 +36,8 @@ module.exports = {
         if (isString(login)) err.push({ erroNome: 'Usuário não corresponde à uma string' })
         if (isString(password)) err.push({ erroNome: 'Senha não corresponde à uma string' })
 
-        res.json(err)
-        if (err.length <= 0)
-            next()
+        if (err.length > 1)
+            res.json(err)
+        next()
     }
 }

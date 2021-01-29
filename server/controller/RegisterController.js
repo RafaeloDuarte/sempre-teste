@@ -3,7 +3,7 @@ const Register = require('../model/Register')
 module.exports = {
     async store(req, res) {
         const { descricao, valor } = req.body
-        await Register.create({ descricao: descricao, valor: valor })
+        await Register.create({ descricao, valor })
             .then(register => {
                 console.log('passou aqui')
                 res.json(register)

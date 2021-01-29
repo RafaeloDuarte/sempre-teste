@@ -1,8 +1,6 @@
 module.exports = function isString(str) {
-    try {
-        Number(str)
-        return false
-    } catch (err) {
+    if (typeof str === 'string' || str instanceof String || str === undefined)
         return true
-    }
+    else
+        return false
 }
